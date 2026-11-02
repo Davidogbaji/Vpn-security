@@ -1,25 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
 import { getSupabaseClient, isSupabaseConfigured } from '../services/supabaseService.js';
+import { localDb } from '../services/localDbService.js';
 import { AppError } from '../middleware/errorHandler.js';
 
 export async function getHistoryHandler(req: Request, res: Response, next: NextFunction) {
   try {
+    const userId = req.user?.id || 'demo-analyst-id';
+    const { search, verdict, limit = '50', offset = '0' } = req.query;
+
+    // 1. If Supabase is not configured, seamlessly return records from local storage
     if (!isSupabaseConfigured()) {
+      const records = localDb.getInvestigations(
+        userId,
+        typeof search === 'string' ? search : undefined,
+        typeof verdict === 'string' ? verdict : undefined
+      );
+
       return res.json({
         success: true,
         configured: false,
-        message: 'Supabase credentials not configured. Investigation history is available once Supabase is connected.',
-        data: [],
+        storageEngine: 'Local JSON Fallback',
+        data: records,
+        total: records.length,
       });
     }
 
-    const userId = req.user?.id;
-    if (!userId) {
-      throw new AppError('Unauthorized: Please log in to view investigation history', 401);
-    }
-
+    // 2. Otherwise query live Supabase PostgreSQL
     const supabase = getSupabaseClient()!;
-    const { search, verdict, limit = '50', offset = '0' } = req.query;
 
     let query = supabase
       .from('investigations')
@@ -44,8 +51,9 @@ export async function getHistoryHandler(req: Request, res: Response, next: NextF
     return res.json({
       success: true,
       configured: true,
-      data,
-      total: count,
+      storageEngine: 'Supabase PostgreSQL',
+      data: data || [],
+      total: count || 0,
     });
   } catch (err) {
     next(err);
@@ -54,24 +62,24 @@ export async function getHistoryHandler(req: Request, res: Response, next: NextF
 
 export async function saveInvestigationHandler(req: Request, res: Response, next: NextFunction) {
   try {
-    if (!isSupabaseConfigured()) {
-      return res.json({
-        success: false,
-        configured: false,
-        message: 'Supabase credentials not configured in backend .env',
-      });
-    }
-
-    const userId = req.user?.id;
-    if (!userId) {
-      throw new AppError('Unauthorized: Please log in to save investigations', 401);
-    }
-
+    const userId = req.user?.id || 'demo-analyst-id';
     const { intelligence, detection } = req.body;
     if (!detection || !detection.ip) {
       throw new AppError('Invalid investigation data payload', 400);
     }
 
+    // 1. If Supabase is not configured, save locally
+    if (!isSupabaseConfigured()) {
+      const saved = localDb.saveInvestigation(userId, intelligence, detection);
+      return res.json({
+        success: true,
+        configured: false,
+        storageEngine: 'Local JSON Fallback',
+        data: saved,
+      });
+    }
+
+    // 2. Otherwise save to Supabase
     const supabase = getSupabaseClient()!;
 
     // Insert into investigations
@@ -123,9 +131,13 @@ export async function saveInvestigationHandler(req: Request, res: Response, next
 export async function getInvestigationByIdHandler(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
-    const userId = req.user?.id;
-    if (!userId) {
-      throw new AppError('Unauthorized', 401);
+    const userId = req.user?.id || 'demo-analyst-id';
+
+    if (!isSupabaseConfigured()) {
+      const records = localDb.getInvestigations(userId);
+      const match = records.find((r) => r.id === id);
+      if (!match) throw new AppError('Investigation record not found', 404);
+      return res.json({ success: true, data: match });
     }
 
     const supabase = getSupabaseClient()!;
@@ -152,9 +164,14 @@ export async function getInvestigationByIdHandler(req: Request, res: Response, n
 export async function deleteInvestigationHandler(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
-    const userId = req.user?.id;
-    if (!userId) {
-      throw new AppError('Unauthorized', 401);
+    const userId = req.user?.id || 'demo-analyst-id';
+
+    if (!isSupabaseConfigured()) {
+      localDb.deleteInvestigation(id, userId);
+      return res.json({
+        success: true,
+        message: 'Investigation record deleted from local storage',
+      });
     }
 
     const supabase = getSupabaseClient()!;

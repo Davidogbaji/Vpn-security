@@ -1,0 +1,102 @@
+================================================================================
+     VPN AND PROXY IP DETECTION SYSTEM - QUICK START & SHARING GUIDE
+================================================================================
+
+1. WHY DID YOU SEE "Authentication service is currently unconfigured"?
+--------------------------------------------------------------------------------
+This happened because the system was expecting a cloud database (Supabase) 
+URL and Key in your backend .env file.
+
+GOOD NEWS: We have now updated the code with a built-in LOCAL DATABASE ENGINE!
+- History now works 100% immediately out-of-the-box!
+- You can save scans, view history, filter, search, and delete records right now
+  without creating any account or setting up any keys.
+- If you later decide to connect to Supabase cloud, the system will automatically
+  upgrade from local storage to cloud PostgreSQL.
+
+
+2. HOW TO START THE APPLICATION ON YOUR OWN SYSTEM
+--------------------------------------------------------------------------------
+OPTION A (Easiest - 1 Double-Click):
+  Simply double-click:
+    start-all.bat
+  This automatically starts both the backend API and frontend app, and opens 
+  http://localhost:5173 in your default browser!
+
+OPTION B (Using Terminal / Command Prompt):
+  Terminal 1 (Backend):
+    cd backend
+    npm run dev
+    (Backend will run at http://localhost:5000)
+
+  Terminal 2 (Frontend):
+    cd frontend
+    npm run dev
+    (Frontend will open at http://localhost:5173)
+
+
+3. HOW TO SEND THIS FOLDER TO SOMEONE ELSE (FRIEND, PROFESSOR, OR EVALUATOR)
+--------------------------------------------------------------------------------
+IMPORTANT TIP BEFORE ZIPPING:
+  The "node_modules" folders contain thousands of small files and make your zip
+  file unnecessarily huge (hundreds of megabytes).
+
+Before you zip and send the folder:
+  1. Delete the "backend/node_modules" folder.
+  2. Delete the "frontend/node_modules" folder.
+  3. Zip the remaining "VPN-SECURITY" folder and send it.
+
+HOW THE OTHER PERSON WILL START IT ON THEIR COMPUTER:
+  Tell the recipient they only need two simple steps:
+  1. Ensure they have Node.js installed (download free from https://nodejs.org).
+  2. Double-click "setup.bat" (this automatically installs all packages).
+  3. Double-click "start-all.bat" (this launches the app in their browser!).
+
+
+4. HOW TO HOST THE APPLICATION COMPLETELY FOR FREE (NO CREDIT CARD REQUIRED)
+--------------------------------------------------------------------------------
+You can host this full-stack application online 24/7 completely for free using
+three popular free-tier providers:
+
+A. DATABASE (Supabase.com - Free PostgreSQL + Auth):
+   1. Go to https://supabase.com and create a free account.
+   2. Click "New Project". Choose a name and database password.
+   3. Once created, click "SQL Editor" on the left menu.
+   4. Copy and paste the contents of "supabase/migrations/001_initial_schema.sql"
+      and click RUN.
+   5. Copy and paste "supabase/migrations/002_rls_policies.sql" and click RUN.
+   6. Go to Project Settings -> API.
+   7. Copy your Project URL, anon key, and service_role key into backend/.env:
+      SUPABASE_URL=https://your-project.supabase.co
+      SUPABASE_ANON_KEY=your-anon-key
+      SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+B. BACKEND (Render.com - Free Node.js Web Service):
+   1. Create a free account at https://render.com.
+   2. Click "New" -> "Web Service".
+   3. Connect your GitHub repository.
+   4. Settings:
+      - Root Directory: backend
+      - Build Command: npm install && npm run build
+      - Start Command: npm start
+   5. Under "Environment Variables", add:
+      - PORT=5000
+      - NODE_ENV=production
+      - SUPABASE_URL=... (your Supabase URL)
+      - SUPABASE_ANON_KEY=... (your Supabase key)
+      - SUPABASE_SERVICE_ROLE_KEY=... (your Supabase service key)
+   6. Click "Deploy". Render gives you a free HTTPS URL like:
+      https://vpn-detection-api.onrender.com
+
+C. FRONTEND (Cloudflare Pages or Vercel - 100% Free Static Hosting):
+   1. Create a free account at https://pages.cloudflare.com (or https://vercel.com).
+   2. Connect your GitHub repository.
+   3. Settings:
+      - Framework preset: Vite
+      - Root Directory: frontend
+      - Build Command: npm run build
+      - Output Directory: dist
+   4. Add Environment Variable:
+      VITE_API_URL=https://vpn-detection-api.onrender.com/api
+   5. Click Deploy. Your site is now live on the internet with a free SSL domain!
+================================================================================

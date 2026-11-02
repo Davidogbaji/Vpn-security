@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { getSupabaseAdminClient, isSupabaseConfigured } from '../services/supabaseService.js';
+import { localDb } from '../services/localDbService.js';
 import { config } from '../config/index.js';
 
 export async function getAdminOverviewHandler(_req: Request, res: Response, next: NextFunction) {
@@ -21,7 +22,7 @@ export async function getAdminOverviewHandler(_req: Request, res: Response, next
         },
         supabase: {
           configured: isSupabaseConfigured(),
-          url: config.supabase.url ? 'Connected' : 'Not configured',
+          url: config.supabase.url ? 'Connected (PostgreSQL Cloud)' : 'Local JSON Fallback Engine',
         },
         googleDoh: {
           url: config.doh.googleDnsUrl,
@@ -30,20 +31,22 @@ export async function getAdminOverviewHandler(_req: Request, res: Response, next
       },
     };
 
+    // If Supabase is unconfigured, return stats from localDb
     if (!isSupabaseConfigured()) {
+      const stats = localDb.getStats();
       return res.json({
         success: true,
         data: {
           metrics: {
-            totalUsers: 0,
-            totalInvestigations: 0,
-            vpnDetections: 0,
-            proxyDetections: 0,
-            torDetections: 0,
+            totalUsers: 1, // Local active analyst session
+            totalInvestigations: stats.totalInvestigations,
+            vpnDetections: stats.vpnDetections,
+            proxyDetections: stats.proxyDetections,
+            torDetections: stats.torDetections,
           },
           systemHealth,
-          recentLogs: [],
-          note: 'Supabase is not configured yet. Configure Supabase in backend/.env to view live database statistics.',
+          recentLogs: stats.recentLogs,
+          note: 'Operating on Local Storage Engine. Provide SUPABASE_URL in backend/.env to upgrade to cloud PostgreSQL.',
         },
       });
     }
@@ -56,7 +59,7 @@ export async function getAdminOverviewHandler(_req: Request, res: Response, next
       });
     }
 
-    // Query aggregated statistics
+    // Query aggregated statistics from Supabase
     const [usersResult, invResult, vpnResult, proxyResult, torResult, logsResult] = await Promise.all([
       adminClient.from('profiles').select('id', { count: 'exact', head: true }),
       adminClient.from('investigations').select('id', { count: 'exact', head: true }),

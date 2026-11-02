@@ -1,0 +1,71 @@
+{
+  "investigations": [
+    {
+      "id": "inv-1793600241597-2f66",
+      "user_id": "demo-analyst-id",
+      "ip_address": "1.1.1.1",
+      "ip_version": "IPv4",
+      "country": "Australia",
+      "isp": "Cloudflare",
+      "detection_verdict": "Hosting network",
+      "risk_score": 35,
+      "is_vpn": false,
+      "is_proxy": false,
+      "is_tor": false,
+      "is_relay": false,
+      "is_hosting": true,
+      "created_at": "2026-11-02T06:17:21.597Z",
+      "detection_results": [
+        {
+          "provider_name": "IPLogs",
+          "raw_signals": [],
+          "network_metadata": {
+            "ip": "1.1.1.1",
+            "isp": "Cloudflare",
+            "country": "Australia"
+          },
+          "explanation": ""
+        }
+      ]
+    },
+    {
+      "id": "demo-inv-001",
+      "user_id": "demo-analyst-id",
+      "ip_address": "8.8.8.8",
+      "ip_version": "IPv4",
+      "country": "United States",
+      "city": "Mountain View",
+      "isp": "Google LLC",
+      "asn": "AS15169",
+      "detection_verdict": "Hosting network",
+      "risk_score": 40,
+      "is_vpn": false,
+      "is_proxy": false,
+      "is_tor": false,
+      "is_relay": false,
+      "is_hosting": true,
+      "created_at": "2026-11-02T05:17:06.458Z",
+      "detection_results": [
+        {
+          "provider_name": "IPLogs",
+          "raw_signals": [
+            "Hosting provider / Cloud datacentre ASN allocation"
+          ],
+          "network_metadata": {
+            "reverseDns": "dns.google"
+          },
+          "explanation": "Identified as Google Cloud Public DNS network infrastructure."
+        }
+      ]
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "log-001",
+      "user_id": "demo-analyst-id",
+      "action": "SYSTEM_INITIALIZED",
+      "target_resource": "Local Storage Engine",
+      "created_at": "2026-11-02T06:17:06.458Z"
+    }
+  ]
+}

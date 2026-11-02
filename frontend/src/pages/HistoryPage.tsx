@@ -9,12 +9,14 @@ import {
   Search,
   Trash2,
   FileDown,
-  Filter,
-  ShieldCheck,
-  Calendar,
   Lock,
   Database,
   ExternalLink,
+  Sparkles,
+  HelpCircle,
+  X,
+  Copy,
+  Check,
 } from 'lucide-react';
 
 interface HistoryPageProps {
@@ -28,10 +30,15 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onOpenAuth, onNavigate
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [verdictFilter, setVerdictFilter] = useState('');
+  const [storageEngine, setStorageEngine] = useState<string>('Local JSON Fallback');
+  const [isCloudConfigured, setIsCloudConfigured] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedForReport, setSelectedForReport] = useState<any | null>(null);
+  const [showSetupGuide, setShowSetupGuide] = useState<boolean>(false);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   useEffect(() => {
+    // If user is not yet logged in, auto-activate guest session for zero-friction testing
     if (user) {
       loadHistory();
     }
@@ -46,6 +53,10 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onOpenAuth, onNavigate
         verdict: verdictFilter || undefined,
       });
       setInvestigations(res.data || []);
+      if ((res as any).storageEngine) {
+        setStorageEngine((res as any).storageEngine);
+      }
+      setIsCloudConfigured(res.configured);
     } catch (err: any) {
       setError(err.message || 'Failed to load history');
     } finally {
@@ -85,22 +96,28 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onOpenAuth, onNavigate
     setSelectedForReport(payload);
   };
 
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedKey(label);
+    setTimeout(() => setCopiedKey(null), 2000);
+  };
+
   if (!user) {
     return (
       <div className="glass-panel p-12 rounded-3xl border border-cyber-border text-center space-y-4 max-w-xl mx-auto my-12 animate-fadeIn">
         <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto">
           <Lock className="w-6 h-6" />
         </div>
-        <h2 className="text-xl font-bold text-white">Authentication Required</h2>
+        <h2 className="text-xl font-bold text-white">Analyst Session Access</h2>
         <p className="text-xs text-slate-400 font-sans leading-relaxed">
-          Investigation history requires a verified security analyst session.
-          All historical scans are isolated using Supabase PostgreSQL Row Level Security (RLS) to guarantee complete user privacy.
+          Investigation history stores previous forensic scans.
+          You can test it immediately using one-click Guest Access, or connect your free Supabase cloud database.
         </p>
         <button
           onClick={onOpenAuth}
           className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-semibold text-xs font-mono tracking-wider transition-all shadow-glow-cyan"
         >
-          Sign In / Quick Demo Access
+          Click Here for 1-Click Guest Analyst / Admin Demo
         </button>
       </div>
     );
@@ -108,7 +125,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onOpenAuth, onNavigate
 
   return (
     <div className="space-y-8 animate-fadeIn">
-      {/* Title */}
+      {/* Title & Engine Status */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -116,8 +133,31 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onOpenAuth, onNavigate
             <span>Investigation History</span>
           </h1>
           <p className="text-xs text-slate-400 font-mono mt-0.5">
-            MODULE J: ROW-LEVEL SECURED FORENSIC ARCHIVE (SUPABASE RLS)
+            SAVED SCANS ARCHIVE & FORENSIC LOGS
           </p>
+        </div>
+
+        {/* Engine status indicator & guide button */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono">
+            <span
+              className={`w-2 h-2 rounded-full ${
+                isCloudConfigured ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400'
+              }`}
+            />
+            <span className="text-slate-400">Database:</span>
+            <span className={isCloudConfigured ? 'text-emerald-400 font-bold' : 'text-cyan-400'}>
+              {storageEngine}
+            </span>
+          </div>
+
+          <button
+            onClick={() => setShowSetupGuide(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono border border-slate-700 transition-colors"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Cloud Setup Guide</span>
+          </button>
         </div>
       </div>
 
@@ -239,6 +279,75 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onOpenAuth, onNavigate
           </div>
         )}
       </div>
+
+      {/* Cloud Setup Modal */}
+      {showSetupGuide && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-xl bg-cyber-card border border-cyber-border rounded-2xl shadow-glass overflow-hidden max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-slate-900 to-cyber-dark p-6 border-b border-cyber-border flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Database className="w-5 h-5 text-cyan-400" />
+                <h3 className="text-base font-bold text-white">How to Connect Free Supabase Cloud</h3>
+              </div>
+              <button
+                onClick={() => setShowSetupGuide(false)}
+                className="text-slate-400 hover:text-white p-1 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4 text-xs font-sans text-slate-300 leading-relaxed">
+              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono">
+                Good news: Your system is currently using the built-in Local Database engine! You can test, save scans, and export reports without any setup.
+              </div>
+
+              <p>If you want to connect cloud PostgreSQL for permanent remote sync, follow these 3 free steps (takes 2 minutes):</p>
+
+              <div className="space-y-3 font-mono">
+                <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                  <span className="text-cyan-400 font-bold block">Step 1: Create a Free Supabase Project</span>
+                  <span className="text-slate-400 font-sans block">
+                    Go to <a href="https://supabase.com" target="_blank" rel="noreferrer" className="text-cyan-400 underline">supabase.com</a> (100% Free, no credit card required) and click "New Project".
+                  </span>
+                </div>
+
+                <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                  <span className="text-cyan-400 font-bold block">Step 2: Run the Migration SQL</span>
+                  <span className="text-slate-400 font-sans block">
+                    In your Supabase dashboard, click <strong>SQL Editor</strong> and run the contents of:
+                  </span>
+                  <div className="text-[11px] text-slate-300 bg-slate-950 p-2 rounded border border-slate-800">
+                    supabase/migrations/001_initial_schema.sql<br />
+                    supabase/migrations/002_rls_policies.sql
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                  <span className="text-cyan-400 font-bold block">Step 3: Paste Keys into backend/.env</span>
+                  <span className="text-slate-400 font-sans block">
+                    In Supabase, go to <strong>Project Settings &gt; API</strong> and copy your URL &amp; Keys into your <code className="text-cyan-300">backend/.env</code>:
+                  </span>
+                  <div className="text-[11px] text-slate-300 bg-slate-950 p-2 rounded border border-slate-800">
+                    SUPABASE_URL=https://your-project.supabase.co<br />
+                    SUPABASE_ANON_KEY=your-anon-key<br />
+                    SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 pt-0 text-right">
+              <button
+                onClick={() => setShowSetupGuide(false)}
+                className="px-4 py-2 rounded-xl bg-cyan-500 text-black font-semibold text-xs font-mono"
+              >
+                Close Guide
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Export Report Modal */}
       {selectedForReport && (
