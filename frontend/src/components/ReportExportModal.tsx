@@ -66,7 +66,7 @@ export const ReportExportModal: React.FC<ReportExportModalProps> = ({
     {
       id: 'pdf',
       name: 'Adobe PDF Document',
-      desc: 'Forensic PDF layout with intelligence tables, risk badges & academic disclaimer',
+      desc: 'Forensic PDF layout with intelligence tables, risk badges & forensic details',
       ext: '.pdf',
       tag: 'RECOMMENDED',
     },
@@ -179,7 +179,7 @@ export const ReportExportModal: React.FC<ReportExportModalProps> = ({
 
         <div className="p-6 pt-0 text-center">
           <p className="text-[11px] text-slate-500 font-mono">
-            All reports include detection timestamps, provider signatures, and academic disclaimers.
+            All reports include detection timestamps, provider signatures, and forensic details.
           </p>
         </div>
       </div>

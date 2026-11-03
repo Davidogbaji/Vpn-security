@@ -76,7 +76,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onSearchIp
         <div className="relative max-w-4xl mx-auto text-center space-y-6 px-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-800/80 text-cyan-400 text-xs font-mono tracking-wide">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-            <span>ACADEMIC CYBERSECURITY CAPSTONE PROJECT</span>
+            <span>CYBERSECURITY NETWORK INTELLIGENCE PLATFORM</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">

@@ -1,7 +1,7 @@
 # VPN AND PROXY IP DETECTION SYSTEM
 
 > **Project Subtitle:** Design and Implementation of a VPN and Proxy IP Detection System Using Network and IP Intelligence.  
-> **Academic Level:** Academic Capstone & Forensic Cybersecurity System
+> **Platform:** Professional Network & Threat Intelligence System
 
 ---
 
