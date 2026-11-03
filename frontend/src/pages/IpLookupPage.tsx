@@ -254,20 +254,6 @@ export const IpLookupPage: React.FC<IpLookupPageProps> = ({ initialIp = '' }) =>
               </div>
             </div>
           </div>
-
-          {/* Academic Geolocation Accuracy Notice */}
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-3">
-            <Info className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <h5 className="text-xs font-semibold text-slate-200 font-mono uppercase">
-                Academic Notice on IP Geolocation Limits
-              </h5>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                IP geolocation maps network blocks registered with Regional Internet Registries (RIRs such as ARIN, RIPE, APNIC)
-                to approximate city/region centers. It does not provide an exact physical address, GPS coordinate, or building location.
-              </p>
-            </div>
-          </div>
         </div>
       )}
 

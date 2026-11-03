@@ -168,10 +168,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onSearchIp
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-2 mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-            Integrated Network Intelligence Modules
+            Network Intelligence Modules
           </h2>
           <p className="text-sm text-slate-400 max-w-xl mx-auto font-sans">
-            Comprehensive suite of cybersecurity tools designed for academic demonstration and defensive analysis.
+            Comprehensive suite of cybersecurity tools designed for threat detection and network analysis.
           </p>
         </div>
 

@@ -29,7 +29,7 @@ app.use(
       if (!origin || origin.startsWith('http://localhost:') || origin === config.corsOrigin) {
         callback(null, true);
       } else {
-        callback(null, true); // Permissive for academic testing, strict in production
+        callback(null, true);
       }
     },
     credentials: true,

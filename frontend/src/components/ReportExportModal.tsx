@@ -73,7 +73,7 @@ export const ReportExportModal: React.FC<ReportExportModalProps> = ({
     {
       id: 'docx',
       name: 'Microsoft Word Document',
-      desc: 'Genuine DOCX format with formatted tables for academic theses and editing',
+      desc: 'Genuine DOCX format with formatted tables for reports and auditing',
       ext: '.docx',
       tag: 'EDITABLE',
     },

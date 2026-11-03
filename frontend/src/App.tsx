@@ -89,7 +89,7 @@ export function AppContent() {
         {currentPage === 'help' && <HelpCenterPage />}
       </main>
 
-      {/* Global Academic Footer */}
+      {/* Global Footer */}
       <Footer />
 
       {/* Authentication Modal */}

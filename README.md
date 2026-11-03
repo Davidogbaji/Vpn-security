@@ -68,7 +68,7 @@ vpn-proxy-detection-system/
 │       ├── 001_initial_schema.sql   # Tables, indexes, triggers
 │       └── 002_rls_policies.sql    # Zero-trust row level security
 │
-└── docs/                            # Comprehensive academic & technical documentation
+└── docs/                            # Comprehensive technical documentation
     ├── PROJECT_ARCHITECTURE.md
     ├── DATABASE_SCHEMA.md
     ├── API_DOCUMENTATION.md
@@ -196,7 +196,7 @@ npm test
 
 ---
 
-## 9. Academic Notice & Limitations
+## 9. System Notice & Forensic Limitations
 
 - **Probabilistic Nature:** IP intelligence indicates the characteristics of network blocks and routing announcements at the timestamp of interrogation. It should not be treated as absolute infallible proof.
 - **No Remote De-anonymization:** A web application cannot penetrate an encrypted VPN tunnel to uncover an external visitor's private IP. The server strictly sees the VPN exit node.

@@ -11,7 +11,7 @@ describe('Report Generation & Formula Sanitization', () => {
     expect(sanitizeCsvValue('Standard Text')).toBe('"Standard Text"');
   });
 
-  it('generates structured JSON report with academic metadata', () => {
+  it('generates structured JSON report with system metadata', () => {
     const report = ReportService.generateJson(
       {
         ip: '8.8.8.8',

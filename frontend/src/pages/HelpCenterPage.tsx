@@ -101,7 +101,7 @@ export const HelpCenterPage: React.FC = () => {
           <span>Educational & Forensic Help Centre</span>
         </h1>
         <p className="text-xs text-slate-400 font-mono mt-0.5">
-          MODULE L: ACADEMIC GLOSSARY, NETWORK ARCHITECTURE & DETECTION METHODOLOGY
+          MODULE L: NETWORK INTELLIGENCE GLOSSARY & DETECTION METHODOLOGY
         </p>
       </div>
 
@@ -160,7 +160,7 @@ export const HelpCenterPage: React.FC = () => {
         })}
       </div>
 
-      {/* Academic Defense References */}
+      {/* Standards & RFC References */}
       <div className="glass-panel p-6 rounded-2xl border border-cyber-border space-y-3">
         <h3 className="text-sm font-bold text-white font-mono flex items-center gap-2">
           <HelpCircle className="w-4 h-4 text-cyan-400" />

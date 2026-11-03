@@ -40,7 +40,7 @@ export const BulkAnalysisPage: React.FC = () => {
     }
 
     if (ips.length > 50) {
-      setError('Batch size limit exceeded. The free academic tier supports up to 50 IP addresses per run.');
+      setError('Batch size limit exceeded. The free tier supports up to 50 IP addresses per run.');
       return;
     }
 

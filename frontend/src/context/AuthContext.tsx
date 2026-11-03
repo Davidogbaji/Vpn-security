@@ -152,7 +152,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const simulateGuestLogin = (role: 'user' | 'admin' = 'user') => {
     const guestProfile: UserProfile = {
       id: `guest-${Date.now()}`,
-      email: role === 'admin' ? 'admin@cybersecurity.lab' : 'researcher@academic.edu',
+      email: role === 'admin' ? 'admin@cybersecurity.lab' : 'analyst@cybersecurity.lab',
       fullName: role === 'admin' ? 'Lab Security Administrator' : 'Guest Security Analyst',
       role,
     };

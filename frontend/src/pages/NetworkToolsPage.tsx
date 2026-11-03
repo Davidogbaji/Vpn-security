@@ -314,7 +314,7 @@ export const NetworkToolsPage: React.FC = () => {
 
               <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
                 <span className="text-[10px] text-cyan-400 font-mono uppercase tracking-wider block">
-                  Academic Historical Explanation:
+                  Historical Context & Specifications:
                 </span>
                 <p className="text-xs text-slate-300 leading-relaxed font-sans">
                   {classifyResult.explanation}

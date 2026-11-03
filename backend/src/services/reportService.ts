@@ -40,7 +40,7 @@ export function sanitizeCsvValue(val: any): string {
 
 export class ReportService {
   /**
-   * Generates a high-quality academic & forensic PDF report
+   * Generates a high-quality forensic PDF report
    */
   static async generatePdf(data: ReportInvestigationData, reportId: string): Promise<Buffer> {
     const doc = new jsPDF({
@@ -154,7 +154,7 @@ export class ReportService {
 
     yPos += 6;
 
-    // Academic Limitations & Legal Disclaimer
+    // Limitations & Methodology Disclaimer
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);
     doc.setTextColor(15, 23, 42);
@@ -165,7 +165,7 @@ export class ReportService {
     doc.setFontSize(8);
     doc.setTextColor(100, 116, 139);
     const disclaimer =
-      'This network intelligence report is generated for academic research, network administration, and defensive cybersecurity analysis. ' +
+      'This network intelligence report is generated for network administration, threat assessment, and defensive cybersecurity analysis. ' +
       'Detection verdicts are derived from multi-provider heuristics, BGP routing tables, ASN classifications, and active proxy/VPN node databases. ' +
       'Because dynamic IP pools, cloud relays, and residential proxies change frequently, results are indicative and should not be considered infallible absolute proof. ' +
       'Geolocation estimates are approximate and do not identify an exact physical street address.';
@@ -300,12 +300,12 @@ export class ReportService {
             new Paragraph({ text: '' }),
 
             new Paragraph({
-              text: '4. Academic Notice & Disclaimer',
+              text: '4. Forensic Notice & Disclaimer',
               heading: HeadingLevel.HEADING_2,
             }),
             new Paragraph({
               text:
-                'This report is generated for academic and security testing purposes. ' +
+                'This report is generated for security auditing and forensic network analysis purposes. ' +
                 'Results are indicative of network configurations at the timestamp of interrogation and should be interpreted by qualified network analysts.',
             }),
           ],
@@ -373,7 +373,7 @@ export class ReportService {
         reportId,
         generatedAt: new Date().toISOString(),
         version: '1.0.0',
-        academicNotice: 'For defensive network analysis and academic demonstration.',
+        notice: 'For defensive network analysis and threat assessment.',
       },
       target: {
         ip: data.ip,

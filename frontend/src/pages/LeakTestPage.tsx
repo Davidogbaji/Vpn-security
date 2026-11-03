@@ -253,20 +253,6 @@ export const LeakTestPage: React.FC = () => {
               ))}
             </div>
           </div>
-
-          {/* Academic Ethical & Security Limitation Notice */}
-          <div className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2">
-            <div className="flex items-center gap-2 text-cyan-400 font-semibold font-mono text-xs uppercase">
-              <Info className="w-4 h-4" />
-              <span>Academic Testing Scope & Technical Limitations</span>
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed font-sans">
-              <strong>Crucial Cybersecurity Limitation:</strong> A website or web application can never magically recover or "deanonymize"
-              the original public residential IP of a remote user who is correctly routing traffic through an encrypted VPN tunnel.
-              The website strictly sees the VPN server exit node. This module runs client-side diagnostic probes exclusively on your own browser
-              session to verify your personal privacy defenses.
-            </p>
-          </div>
         </div>
       )}
     </div>

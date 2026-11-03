@@ -273,20 +273,6 @@ export const DetectionPage: React.FC<DetectionPageProps> = ({ initialIp = '' }) 
             </div>
           </div>
 
-          {/* Academic False Positive Disclaimer Notice */}
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <h5 className="text-xs font-semibold text-slate-200 font-mono uppercase">
-                Academic Methodological Notice: Probabilistic Nature of IP Classification
-              </h5>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                A single intelligence provider or ASN classifier can produce false positives or outdated classifications due to dynamic IP reassignment,
-                residential VPN routing pools, and corporate remote work gateways. Results are indicative indicators and should be evaluated in context
-                with additional forensic telemetry.
-              </p>
-            </div>
-          </div>
         </div>
       )}
 
